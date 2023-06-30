@@ -1,6 +1,6 @@
 import { Address, Enrollment } from '@prisma/client';
 import { request } from '@/utils/request';
-import { invalidDataError, notFoundError } from '@/errors';
+import { invalidDataError, notFoundCepError, notFoundError } from '@/errors';
 import addressRepository, { CreateAddressParams } from '@/repositories/address-repository';
 import enrollmentRepository, { CreateEnrollmentParams } from '@/repositories/enrollment-repository';
 import { exclude } from '@/utils/prisma-utils';
@@ -16,6 +16,10 @@ async function getAddressFromCEP(cep: string) {
 
   if (!result.data) {
     throw notFoundError();
+  }
+
+  if(result.data.erro === true){
+    throw notFoundCepError();
   }
 
   // FEITO (transformar em um objeto): não estamos interessados em todos os campos
