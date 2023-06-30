@@ -10,17 +10,18 @@ async function getAddressFromCEP(cep: string) {
   // if(cep.length !==8) throw notFoundError();
   // FIXME: está com CEP fixo!
   const result = await request.get(`${process.env.VIA_CEP_API}/${cep}/json/`);
-
+  // console.log(`${process.env.VIA_CEP_API}/${cep}/json/`)
+  // console.log(result)
   if (!result.data || result.data.error === true) {
     throw notFoundError();
   }
 
   // FIXME: não estamos interessados em todos os campos
   return {
-    logadouro: result.data.logadouro,
+    logradouro: result.data.logradouro,
     complemento: result.data.complemento,
     bairro: result.data.bairro,
-    cidade: result.data.cidade,
+    cidade: result.data.localidade,
     uf: result.data.uf
   }
 }
