@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Response, query } from 'express';
 import httpStatus from 'http-status';
 import { AuthenticatedRequest } from '@/middlewares';
 import enrollmentsService from '@/services/enrollments-service';
@@ -28,18 +28,15 @@ export async function postCreateOrUpdateEnrollment(req: AuthenticatedRequest, re
   }
 }
 
-// FEITO - Receber o CEP do usuário por query params.
+// TODO - Receber o CEP do usuário por query params.
 export async function getAddressFromCEP(req: AuthenticatedRequest, res: Response) {
-  const { cep  } = req.params;
+  const { cep } = req.params
   try {
     const address = await enrollmentsService.getAddressFromCEP(cep);
     res.status(httpStatus.OK).send(address);
   } catch (error) {
     if (error.name === 'NotFoundError') {
       return res.send(httpStatus.NO_CONTENT);
-    }
-    if(error.name === 'InvalidCepError' || error.name === 'NotFoundCepError'){
-      return res.send(httpStatus.NO_CONTENT)
     }
   }
 }
