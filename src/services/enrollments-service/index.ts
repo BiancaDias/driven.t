@@ -7,11 +7,11 @@ import { exclude } from '@/utils/prisma-utils';
 
 // TODO - Receber o CEP por parâmetro nesta função.
 async function getAddressFromCEP(cep: string) {
-  if(cep.length !==8) throw notFoundError();
+  // if(cep.length !==8) throw notFoundError();
   // FIXME: está com CEP fixo!
   const result = await request.get(`${process.env.VIA_CEP_API}/${cep}/json/`);
 
-  if (result.data.error) {
+  if (!result.data) {
     throw notFoundError();
   }
 
