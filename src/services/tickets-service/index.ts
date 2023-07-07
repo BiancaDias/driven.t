@@ -1,5 +1,9 @@
-import { getTicketsTypesPrisma } from "@/repositories/tickets-repository";
+import { getTicketsPrisma, getTicketsTypesPrisma } from "@/repositories/tickets-repository";
 
 export async function getTicketsTypesService(){
-    return getTicketsTypesPrisma();
+    return await getTicketsTypesPrisma();
+}
+
+export async function getTicketsService(id:number){
+    return getTicketsPrisma(id)
 }
