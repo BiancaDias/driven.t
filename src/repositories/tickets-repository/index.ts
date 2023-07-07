@@ -24,6 +24,27 @@ export async function postTicketPrisma(userId: number, ticketTypeId: number){
             status: "RESERVED",
             ticketTypeId,
             enrollmentId: userId
-        }
+        },
+        include: {
+            TicketType: {
+                select: {
+                    id: true,
+                    name: true,
+                    price: true,
+                    isRemote: true,
+                    includesHotel: true,
+                    createdAt: true,
+                    updatedAt: true
+                }
+            }
+          }
     })
+}
+
+export async function getUserPrisma(userId:number){
+  return await prisma.ticket.findUnique({
+    where:{
+      id: userId
+    }
+  })
 }

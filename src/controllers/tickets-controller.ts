@@ -45,9 +45,10 @@ export async function postTicket(req: AuthenticatedRequest, res:Response){
     const { ticketTypeId } = req.body
     try{
         if(!ticketTypeId) return res.sendStatus(httpStatus.BAD_REQUEST)
-        const tickets = await postTicketService(userId, ticketTypeId);
+        const tickets = await postTicketService(userId, Number(ticketTypeId));
         res.status(httpStatus.CREATED).send(tickets)
     }catch (error) {
+        if (error.name === 'NotFoundError') return res.sendStatus(httpStatus.NOT_FOUND);
         return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
       }
 }
