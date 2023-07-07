@@ -17,3 +17,13 @@ export async function getTicketsPrisma(id: number){
         },
       });
 }
+
+export async function postTicketPrisma(userId: number, ticketTypeId: number){
+    return await prisma.ticket.create({
+        data:{
+            status: "RESERVED",
+            ticketTypeId,
+            enrollmentId: userId
+        }
+    })
+}
