@@ -15,6 +15,6 @@ export async function postTicketService(userId: number, ticketTypeId: number){
 
     const user = await getUserPrisma(userId)
     if(!user) throw notFoundError()
-    await postTicketPrisma(userId, ticketTypeId)
+    await postTicketPrisma(user.id, ticketTypeId)
     return getTicketsService(userId)
 }
