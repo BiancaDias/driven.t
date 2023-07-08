@@ -42,9 +42,9 @@ export async function postTicketPrisma(userId: number, ticketTypeId: number){
 }
 
 export async function getUserPrisma(userId:number){
-  return await prisma.ticket.findUnique({
+  return await prisma.enrollment.findFirst({
     where:{
-      id: userId
+      userId
     }
   })
 }

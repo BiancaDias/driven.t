@@ -1,4 +1,4 @@
-import { notFoundError } from "@/errors";
+import { notFoundError, requestError } from "@/errors";
 import { getTicketsPrisma, getTicketsTypesPrisma, getUserPrisma, postTicketPrisma } from "@/repositories/tickets-repository";
 
 export async function getTicketsTypesService(){
@@ -10,7 +10,11 @@ export async function getTicketsService(id:number){
 
 }
 export async function postTicketService(userId: number, ticketTypeId: number){
+
+    if(!ticketTypeId) throw requestError(ticketTypeId, "Não é possivel processar")
+
     const user = await getUserPrisma(userId)
     if(!user) throw notFoundError()
-    return await postTicketPrisma(userId, ticketTypeId)
+    await postTicketPrisma(userId, ticketTypeId)
+    return getTicketsService(userId)
 }

@@ -39,16 +39,32 @@ export async function getTickets(req: AuthenticatedRequest, res:Response){ //se 
         return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
       }
 }
-
+type tick = {ticketTypeId:number}
 export async function postTicket(req: AuthenticatedRequest, res:Response){
     const userId = req.userId
-    const { ticketTypeId } = req.body
+    const { ticketTypeId } = req.body as tick
     try{
-        if(!ticketTypeId) return res.sendStatus(httpStatus.BAD_REQUEST)
-        const tickets = await postTicketService(userId, Number(ticketTypeId));
-        res.status(httpStatus.CREATED).send(tickets)
+        const ticket = await postTicketService(userId, ticketTypeId);
+        res.status(httpStatus.CREATED).send({
+            id: ticket.id,
+            status: ticket.status,
+            ticketTypeId: ticket.ticketTypeId,
+            enrollmentId: ticket.enrollmentId,
+            TicketType: {
+              id: ticket.TicketType.id,
+              name: ticket.TicketType.name,
+              price: ticket.TicketType.price,
+              isRemote: ticket.TicketType.isRemote,
+              includesHotel: ticket.TicketType.includesHotel,
+              createdAt: ticket.TicketType.createdAt,
+              updatedAt: ticket.TicketType.updatedAt,
+            },
+            createdAt: ticket.createdAt,
+            updatedAt: ticket.updatedAt,
+        })
     }catch (error) {
         if (error.name === 'NotFoundError') return res.sendStatus(httpStatus.NOT_FOUND);
-        return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+        if (error.name === 'RequestError') return res.sendStatus(httpStatus.BAD_REQUEST);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
       }
 }
