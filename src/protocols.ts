@@ -46,3 +46,13 @@ export type AddressEnrollment = {
   error?: string;
 };
 
+export type Payment = {
+	ticketId: number,
+	cardData: {
+		issuer: string,
+        number: number,
+        name: string,
+        expirationDate: Date,
+        cvv: number
+	}
+}
