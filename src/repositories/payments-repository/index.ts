@@ -1,12 +1,12 @@
 import { prisma } from "@/config";
-import { Payment } from "@prisma/client";
 
-export async function getPaymentsPrisma(ticketId: number): Promise<Payment> | null{
+
+export async function getPaymentsPrisma(ticketId: number) {
     return await prisma.payment.findFirst({
       where: {
         ticketId
-      },
-    });
+      }
+    })
   }
 
 

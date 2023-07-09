@@ -36,3 +36,12 @@ export async function getUserPrisma(userId:number){
     }
   })
 }
+
+export async function  getTicketPrisma(id : number) {
+  return prisma.ticket.findFirst({
+      where : {
+        id
+      }
+  })
+  
+}
