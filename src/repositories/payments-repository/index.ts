@@ -1,4 +1,5 @@
 import { prisma } from "@/config";
+import { Enrollment, Ticket } from "@prisma/client";
 
 
 export async function getPaymentsPrisma(ticketId: number) {
@@ -9,14 +10,17 @@ export async function getPaymentsPrisma(ticketId: number) {
     })
   }
 
-
-export async function getUserPrisma(ticketId: number){
-  return await prisma.ticket.findFirst({
-    where:{
-      id: ticketId
-    },
-    include:{
-      Enrollment: true
+export async function getUserPrisma(ticketId: number, userId:number): Promise<Ticket | null> {
+  const ticket = await prisma.ticket.findFirst({
+    where: {
+      id: ticketId,
+      Enrollment: {userId}
     }
-  })
+  });
+
+  if (ticket) {
+    return ticket
+  }
+
+  return null;
 }
