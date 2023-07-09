@@ -6,6 +6,7 @@ import httpStatus from "http-status";
 export function getPayments(req: AuthenticatedRequest, res: Response){
     const ticketId = req.query.ticketId;
     const userId = req.userId;
+    if(!ticketId) return res.sendStatus(httpStatus.BAD_REQUEST)
     try{
         const ticketPayment = getPaymentsService(Number(ticketId), Number(userId))
         res.status(httpStatus.OK).send(ticketPayment)
