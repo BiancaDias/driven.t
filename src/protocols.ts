@@ -1,3 +1,5 @@
+import { TicketStatus } from "@prisma/client";
+
 export type ApplicationError = {
   name: string;
   message: string;
@@ -18,7 +20,6 @@ export type RequestError = {
   name: string;
   message: string;
 };
-
 
 export type ViaCEPAddressError = {
   error: boolean;
@@ -47,12 +48,32 @@ export type AddressEnrollment = {
 };
 
 export type Payment = {
-	ticketId: number,
-	cardData: {
-		issuer: string,
-        number: number,
-        name: string,
-        expirationDate: Date,
-        cvv: number
-	}
+  ticketId: number;
+  cardData: {
+    issuer: string;
+    number: number;
+    name: string;
+    expirationDate: Date;
+    cvv: number;
+  };
+};
+
+export type Tick = { ticketTypeId: number };
+
+export type TicketFormat = {
+  id: number,
+  status: TicketStatus,
+  ticketTypeId: number,
+  enrollmentId: number,
+  TicketType: {
+    id: number,
+    name: string,
+    price: number,
+    isRemote: boolean,
+    includesHotel: boolean,
+    createdAt: Date,
+    updatedAt: Date,
+  },
+  createdAt: Date,
+  updatedAt: Date,
 }

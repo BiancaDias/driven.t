@@ -1,54 +1,53 @@
-import { prisma } from "@/config";
-import { Enrollment, Ticket } from "@prisma/client";
-
+import { Ticket } from '@prisma/client';
+import { prisma } from '@/config';
 
 export async function getPaymentsPrisma(ticketId: number) {
-    return await prisma.payment.findFirst({
-      where: {
-        ticketId
-      }
-    })
-  }
+  return await prisma.payment.findFirst({
+    where: {
+      ticketId,
+    },
+  });
+}
 
-export async function getUserPrisma(ticketId: number, userId:number): Promise<Ticket | null> {
+export async function getUserPrisma(ticketId: number, userId: number): Promise<Ticket | null> {
   const ticket = await prisma.ticket.findFirst({
     where: {
       id: ticketId,
-      Enrollment: {userId}
-    }
+      Enrollment: { userId },
+    },
   });
 
   if (ticket) {
-    return ticket
+    return ticket;
   }
 
   return null;
 }
 
-export async function postPaymentPrisma(ticketId: number, cardIssuer: string, cardLastDigits: string){
-  const ticket =  await prisma.ticket.findFirst({
+export async function postPaymentPrisma(ticketId: number, cardIssuer: string, cardLastDigits: string) {
+  const ticket = await prisma.ticket.findFirst({
     where: {
-      id: ticketId
+      id: ticketId,
     },
     include: {
-      TicketType: true
-    }
+      TicketType: true,
+    },
   });
   await prisma.ticket.update({
-    where:{
-      id: ticketId
+    where: {
+      id: ticketId,
     },
-    data:{
-      status: "PAID"
-    }
-  })
-  const value = ticket.TicketType.price
+    data: {
+      status: 'PAID',
+    },
+  });
+  const value = ticket.TicketType.price;
   return await prisma.payment.create({
-    data:{
+    data: {
       ticketId,
       value,
       cardIssuer,
-      cardLastDigits
-    }
-  })
+      cardLastDigits,
+    },
+  });
 }
