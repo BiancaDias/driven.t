@@ -1,4 +1,4 @@
-import { invalidDataError, notFoundError, paymentRequired } from "@/errors";
+import { notFoundError, paymentRequired } from "@/errors";
 import { getHotelsByIdPrisma, getHotelsPrisma } from "@/repositories/hotels-repository";
 import { getTicketsPrisma, verifyTicketPrisma } from "@/repositories/tickets-repository";
 
