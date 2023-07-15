@@ -43,11 +43,3 @@ export async function getTicketPrisma(id: number) {
     },
   });
 }
-
-export async function verifyTicketPrisma(userId: number){
-  const ticket = await prisma.enrollment.findUnique({
-      where: {userId},
-      include: {Ticket: true}
-  })
-  return ticket;
-}
