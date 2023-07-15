@@ -19,8 +19,10 @@ export async function getHotelsService(userId: number) {
 }
 
 export async function getHotelsByIdService(idHotel:number, userId: number) {
+    const enrollment = await findEnrollmentByUserId(userId);
+    if(!enrollment) throw notFoundError()
     const ticket = await getTicketsPrisma(userId);
-    if(!ticket) throw notFoundError; //ja verifica inscrição e ticket
+    if(!ticket) throw notFoundError();
     if(ticket.status === "RESERVED") throw paymentRequired();
 
     if(ticket.TicketType.isRemote || !ticket.TicketType.includesHotel ) throw paymentRequired();

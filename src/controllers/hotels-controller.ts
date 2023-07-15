@@ -8,11 +8,6 @@ import { TicketStatus } from '@prisma/client';
 
 
 export async function getHotels(req:AuthenticatedRequest, res:Response){
-      // const user = await createUser();
-      // const token = await generateValidToken(user);
-      // const enrollment = await createEnrollmentWithAddress(user);
-      // const ticketType = await createTicketTypeRemoteOrHotel(false, true);
-      // const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
     const userId = req.userId;
     try{
         const hotel = await getHotelsService(userId);

@@ -26,4 +26,15 @@ export async function createHotel() {
     await prisma.room.createMany({
       data: rooms,
     });
+  
+    const hotelWithRooms = await prisma.hotel.findUnique({
+      where: {
+        id: hotel.id,
+      },
+      include: {
+        Rooms: true,
+      },
+    });
+  
+    return hotelWithRooms;
 }
