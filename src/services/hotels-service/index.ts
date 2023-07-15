@@ -28,7 +28,7 @@ export async function getHotelsByIdService(idHotel:number, userId: number) {
     if(ticket.TicketType.isRemote || !ticket.TicketType.includesHotel ) throw paymentRequired();
 
     const hotel = await getHotelsByIdPrisma(idHotel);
-    if(hotel) throw notFoundError();
+    if(!hotel) throw notFoundError();
 
     return hotel;
 }

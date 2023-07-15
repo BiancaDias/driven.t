@@ -177,6 +177,17 @@ describe('GET /hotels/:hotelId', () => {
     const response = await server.get('/hotels/1').set('Authorization', `Bearer ${token}`);
     expect(response.status).toBe(httpStatus.PAYMENT_REQUIRED);
   });
+  //Retorna status 404 se não existir hotéis?
+  it('should respond with status 404 if ticket does not exist hotels', async () => {
+    const user = await createUser();
+    const token = await generateValidToken(user);
+    const enrollment = await createEnrollmentWithAddress(user);
+    const ticketType = await createTicketTypeRemoteOrHotel(false, true);
+    await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+
+    const response = await server.get('/hotels/1000').set('Authorization', `Bearer ${token}`);
+    expect(response.status).toBe(httpStatus.NOT_FOUND);
+  });
   it('should respond with status 200 and show hotels', async () => {
     const user = await createUser();
     const token = await generateValidToken(user);
@@ -188,25 +199,23 @@ describe('GET /hotels/:hotelId', () => {
     const response = await server.get(`/hotels/${hotel.id}`).set('Authorization', `Bearer ${token}`);
     expect(response.status).toBe(httpStatus.OK);
     expect(response.body).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          createdAt: expect.any(String),
-          id: expect.any(Number),
-          image: expect.any(String),
-          name: expect.any(String),
-          updatedAt: expect.any(String),
-          Rooms: expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(Number),
-              name: expect.any(String),
-              capacity: expect.any(Number),
-              hotelId: expect.any(Number),
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-            })
-          ])
-        })
-      ])
+      expect.objectContaining({
+        createdAt: expect.any(String),
+        id: hotel.id,
+        image: expect.any(String),
+        name: expect.any(String),
+        updatedAt: expect.any(String),
+        Rooms: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(Number),
+            name: expect.any(String),
+            capacity: expect.any(Number),
+            hotelId: hotel.id,
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          })
+        ])
+      })
     );
-  });
+  })
 })

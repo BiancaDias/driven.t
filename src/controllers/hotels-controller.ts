@@ -2,10 +2,6 @@ import { Response } from 'express';
 import { AuthenticatedRequest } from '@/middlewares';
 import httpStatus from 'http-status';
 import { getHotelsByIdService, getHotelsService } from '@/services/hotels-service';
-import { createUser, createEnrollmentWithAddress, createTicketTypeRemoteOrHotel, createTicket } from '../../tests/factories'
-import { generateValidToken } from '../../tests/helpers';
-import { TicketStatus } from '@prisma/client';
-
 
 export async function getHotels(req:AuthenticatedRequest, res:Response){
     const userId = req.userId;
