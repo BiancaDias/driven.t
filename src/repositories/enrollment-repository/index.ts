@@ -30,11 +30,11 @@ async function findById(enrollmentId: number) {
   });
 }
 
-export async function findEnrollmentByUserId(userId: number): Promise<Enrollment | null>{
+export async function findEnrollmentByUserId(userId: number): Promise<Enrollment | null> {
   const enrollment = await prisma.enrollment.findUnique({
-    where: {userId}
-  })
-  if(!enrollment) return null
+    where: { userId },
+  });
+  if (!enrollment) return null;
 
   return enrollment;
 }

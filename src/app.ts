@@ -2,15 +2,20 @@ import 'reflect-metadata';
 import 'express-async-errors';
 import express, { Express } from 'express';
 import cors from 'cors';
-import ticketRouter from './routers/tickets-router';
-import paymentsRouter from './routers/payments-router';
 import { loadEnv, connectDb, disconnectDB } from '@/config';
 
 loadEnv();
 
 import { handleApplicationErrors } from '@/middlewares';
-import { usersRouter, authenticationRouter, eventsRouter, enrollmentsRouter } from '@/routers';
-import hotelsRouter from './routers/hotels-router';
+import {
+  usersRouter,
+  authenticationRouter,
+  eventsRouter,
+  enrollmentsRouter,
+  ticketRouter,
+  paymentsRouter,
+  hotelsRouter,
+} from '@/routers';
 
 const app = express();
 app

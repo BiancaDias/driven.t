@@ -8,4 +8,4 @@ paymentsRouter.use(authenticateToken);
 paymentsRouter.get('/', getPayments);
 paymentsRouter.post('/process', postPayments);
 
-export default paymentsRouter;
+export { paymentsRouter };

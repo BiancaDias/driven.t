@@ -8,4 +8,4 @@ hotelsRouter.use(authenticateToken);
 hotelsRouter.get('/', getHotels);
 hotelsRouter.get('/:hotelId', getHotelsById);
 
-export default hotelsRouter;
+export { hotelsRouter };
