@@ -34,8 +34,9 @@ export async function postBooking(req: AuthenticatedRequest, res: Response){
 export async function putBooking(req: AuthenticatedRequest, res: Response){
     const { roomId } = req.body;
     const { bookingId } = req.params;
+    const userId = req.userId;
     try {
-        const booking = await putBookingService(Number(bookingId), Number(roomId));
+        const booking = await putBookingService(Number(bookingId), Number(roomId), Number(userId));
     
         res.status(httpStatus.OK).send(booking);
       } catch (error) {

@@ -3,10 +3,14 @@ import {
     notFoundError
 } from "@/errors";
 import {
+    bookingByUser,
+    capacityPrisma,
     getBookingPrisma,
     postBookingPrisma,
+    putBookingPrisma,
     verifyRoomPrisma
 } from "@/repositories/booking-repository";
+import { getTicketsPrisma } from "@/repositories/tickets-repository";
 import { Booking } from "@prisma/client";
 
 export async function getBookingService(userId:number) { //verificar em teste unitario:
@@ -18,13 +22,24 @@ export async function getBookingService(userId:number) { //verificar em teste un
 export async function postBookingService(userId:number, roomId:number){
     const room = await verifyRoomPrisma(roomId);
     if(!room) throw notFoundError();
-    if(room.capacity === 0) forbiddenError();
-    return await postBookingPrisma(userId, roomId);
+
+    const booking =  await capacityPrisma(roomId)
+    if(room.capacity === booking.length) forbiddenError();
+
+    const ticket = await getTicketsPrisma(userId);
+    if (!ticket) throw notFoundError();
+    if (ticket.status === 'RESERVED') throw forbiddenError();
+  
+    if (ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) throw forbiddenError();
+    const bookingRoom = await postBookingPrisma(userId, roomId);
+    return {bookingId: bookingRoom.id}
 }
 
-export async function putBookingService(bookingId:number, roomId:number): Promise<Booking>{
+export async function putBookingService(bookingId:number, roomId:number, userId:number): Promise<Booking>{
+    const bookingUser = bookingByUser(userId)
     const room = await verifyRoomPrisma(roomId);
     if(!room) throw notFoundError();
-    if(room.capacity === 0) forbiddenError();
-    return await putBookingService(bookingId, roomId);
+    const booking =  await capacityPrisma(roomId)
+    if(room.capacity === booking.length) forbiddenError();
+    return await putBookingPrisma(bookingId, roomId);
 }

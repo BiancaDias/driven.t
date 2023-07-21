@@ -33,3 +33,15 @@ export async function verifyRoomPrisma(roomId: number){
         include: {Booking: true}
     })
 }
+
+export async function capacityPrisma(roomId: number){
+    return await prisma.booking.findMany({
+        where: {roomId}
+    })
+}
+
+export async function bookingByUser(userId: number){
+    return await prisma.booking.findFirst({
+        where: {userId}
+    })
+}
