@@ -1,14 +1,14 @@
 import { prisma } from "@/config";
 
-export async function getBooking(userId: number){
-    return prisma.booking.findFirst({
+export async function getBookingPrisma(userId: number){
+    return await prisma.booking.findFirst({
         where: {userId},
         include: {Room: true}
     })
 }
 
-export async function postBooking(userId: number, roomId: number){
-    return prisma.booking.create({
+export async function postBookingPrisma(userId: number, roomId: number){
+    return await prisma.booking.create({
         data:{
             userId,
             roomId
@@ -16,13 +16,19 @@ export async function postBooking(userId: number, roomId: number){
     })
 }
 
-export async function putBooking(bookingId: number, roomId: number){
-    return prisma.booking.update({
+export async function putBookingPrisma(bookingId: number, roomId: number){
+    return await prisma.booking.update({
         where:{
             id: bookingId
         },
         data:{
             roomId
         }
+    })
+}
+
+export async function verifyRoomPrisma(roomId: number){
+    return await prisma.room.findUnique({
+        where: {id: roomId}
     })
 }
