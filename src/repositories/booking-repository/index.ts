@@ -29,6 +29,7 @@ export async function putBookingPrisma(bookingId: number, roomId: number){
 
 export async function verifyRoomPrisma(roomId: number){
     return await prisma.room.findUnique({
-        where: {id: roomId}
+        where: {id: roomId},
+        include: {Booking: true}
     })
 }

@@ -23,5 +23,8 @@ export async function postBookingService(userId:number, roomId:number){
 }
 
 export async function putBookingService(bookingId:number, roomId:number): Promise<Booking>{
+    const room = await verifyRoomPrisma(roomId);
+    if(!room) throw notFoundError();
+    if(room.capacity === 0) forbiddenError();
     return await putBookingService(bookingId, roomId);
 }
