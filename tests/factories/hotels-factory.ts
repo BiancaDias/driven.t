@@ -1,8 +1,9 @@
 import faker from '@faker-js/faker';
 import { prisma } from '@/config';
+import { Hotel, Room } from '@prisma/client';
 
 export async function createHotel() {
-  const numberOfRooms = Math.floor(Math.random() * 10) + 1;
+  const numberOfRooms = Math.floor(Math.random() * 10) + 2;
 
   const hotel = await prisma.hotel.create({
     data: {
@@ -37,4 +38,38 @@ export async function createHotel() {
   });
 
   return hotelWithRooms;
+}
+
+export function builHotelWithRooms(): Hotel & { Rooms: Room[] } {
+  const date = new Date();
+  const hotel: Hotel = {
+    id: 1,
+    name: faker.company.companyName(),
+    image: faker.image.imageUrl(),
+    createdAt: date,
+    updatedAt: date,
+  };
+
+  const quarto1: Room = {
+    id: 1,
+    name: faker.company.companyName(),
+    capacity: 3,
+    hotelId: hotel.id,
+    createdAt: date,
+    updatedAt: date,
+  };
+
+  const quarto2: Room = {
+    id: 2,
+    name: faker.company.companyName(),
+    capacity: 2,
+    hotelId: hotel.id,
+    createdAt: date,
+    updatedAt: date,
+  };
+
+  return {
+    ...hotel,
+    Rooms: [quarto1, quarto2],
+  };
 }

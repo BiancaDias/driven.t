@@ -18,5 +18,6 @@
       }
     ]
   },
-  "include": ["src", "tests"]
+  "include": ["src", "tests", "tests/unit"]
 }
+

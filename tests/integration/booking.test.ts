@@ -78,7 +78,7 @@ describe('POST /booking', () => {
       const ticketType = await createTicketTypeRemoteOrHotel(false, true);
       await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       const hotel = await createHotel();
-      await createBooking(user.id, hotel.Rooms[0].id)
+      //await createBooking(user.id, hotel.Rooms[0].id)
 
       const body = {roomId: hotel.Rooms[0].id}
       
@@ -87,6 +87,35 @@ describe('POST /booking', () => {
       expect(response.body).toEqual(
             expect.objectContaining({
               bookingId: expect.any(Number),
+            }),
+          );
+  })
+})
+
+describe('PUT /booking', () => {
+  it('should respond with status 401 when token is invalid', async () => {
+    
+    const token = faker.lorem.word();
+    const body = {roomId: 1}
+    const response = await server.put(`/booking/1`).set('Authorization', `Bearer ${token}`).send(body);
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+})
+  it('should respond with status 200 and the id from the booking when sucsses', async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const enrollment = await createEnrollmentWithAddress(user);
+      const ticketType = await createTicketTypeRemoteOrHotel(false, true);
+      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+      const hotel = await createHotel();
+      const booking = await createBooking(user.id, hotel.Rooms[0].id)
+
+      const body = {roomId: hotel.Rooms[1].id}
+      
+      const response = await server.put(`/booking/${booking.id}`).set('Authorization', `Bearer ${token}`).send(body);
+      expect(response.status).toBe(httpStatus.OK);
+      expect(response.body).toEqual(
+            expect.objectContaining({
+              bookingId: booking.id
             }),
           );
   })

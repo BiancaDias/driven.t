@@ -11,7 +11,6 @@ export async function getBooking(req: AuthenticatedRequest, res: Response) {
         res.status(httpStatus.OK).send(booking);
       } catch (error) {
         if (error.name === 'NotFoundError') return res.sendStatus(httpStatus.NOT_FOUND);
-        if (error.name === 'UnauthorizedError') return res.sendStatus(httpStatus.UNAUTHORIZED);
         res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
       }
 }
@@ -26,7 +25,6 @@ export async function postBooking(req: AuthenticatedRequest, res: Response){
       } catch (error) {
         if (error.name === 'NotFoundError') return res.sendStatus(httpStatus.NOT_FOUND);
         if (error.name === 'ForbiddenError') return res.sendStatus(httpStatus.FORBIDDEN);
-        if (error.name === 'UnauthorizedError') return res.sendStatus(httpStatus.UNAUTHORIZED);
         res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
       }
 }
@@ -42,7 +40,6 @@ export async function putBooking(req: AuthenticatedRequest, res: Response){
       } catch (error) {
         if (error.name === 'NotFoundError') return res.sendStatus(httpStatus.NOT_FOUND);
         if (error.name === 'ForbiddenError') return res.sendStatus(httpStatus.FORBIDDEN);
-        if (error.name === 'UnauthorizedError') return res.sendStatus(httpStatus.UNAUTHORIZED);
         res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
       }
 }
