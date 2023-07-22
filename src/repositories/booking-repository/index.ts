@@ -35,7 +35,7 @@ async function verifyRoomPrisma(roomId: number){
 }
 
 async function capacityPrisma(roomId: number){
-    return await prisma.booking.findMany({
+    return await prisma.booking.count({
         where: {roomId}
     })
 }

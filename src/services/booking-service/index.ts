@@ -33,7 +33,7 @@ export async function putBookingService(bookingId:number, roomId:number, userId:
     const room = await bookingRepository.verifyRoomPrisma(roomId);
     if(!room) throw notFoundError();
     const booking =  await bookingRepository.capacityPrisma(roomId)
-    if(room.capacity === booking.length) forbiddenError();
+    if(room.capacity === booking) forbiddenError();
     const bookingRoom = await bookingRepository.putBookingPrisma(bookingId, roomId);
     return {bookingId: bookingRoom.id}
 }
