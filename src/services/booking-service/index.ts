@@ -16,7 +16,7 @@ export async function postBookingService(userId:number, roomId:number){
     if(!room) throw notFoundError();
 
     const booking =  await bookingRepository.capacityPrisma(roomId)
-    if(room.capacity === booking) forbiddenError();
+    if(room.capacity <= booking.length) forbiddenError();
 
     const ticket = await bookingRepository.getTicketsPrisma(userId);
     if (!ticket) throw notFoundError();
@@ -33,7 +33,7 @@ export async function putBookingService(bookingId:number, roomId:number, userId:
     const room = await bookingRepository.verifyRoomPrisma(roomId);
     if(!room) throw notFoundError();
     const booking =  await bookingRepository.capacityPrisma(roomId)
-    if(room.capacity === booking) forbiddenError();
+    if(room.capacity <= booking.length) forbiddenError();
     const bookingRoom = await bookingRepository.putBookingPrisma(bookingId, roomId);
     return {bookingId: bookingRoom.id}
 }

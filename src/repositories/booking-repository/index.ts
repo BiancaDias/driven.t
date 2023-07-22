@@ -28,15 +28,19 @@ async function putBookingPrisma(bookingId: number, roomId: number){
 }
 
 async function verifyRoomPrisma(roomId: number){
-    return await prisma.room.findUnique({
+    return await prisma.room.findFirst({
         where: {id: roomId},
-        include: {Booking: true}
     })
 }
 
 async function capacityPrisma(roomId: number){
-    return await prisma.booking.count({
-        where: {roomId}
+    return await prisma.booking.findMany({
+        where: {
+            roomId,
+          },
+          include: {
+            Room: true,
+          },
     })
 }
 
