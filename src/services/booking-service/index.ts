@@ -3,7 +3,6 @@ import {
     notFoundError
 } from "@/errors";
 import bookingRepository from "@/repositories/booking-repository";
-import { getTicketsPrisma } from "@/repositories/tickets-repository";
 import { Booking } from "@prisma/client";
 
 export async function getBookingService(userId:number) { //verificar em teste unitario:
@@ -19,7 +18,7 @@ export async function postBookingService(userId:number, roomId:number){
     const booking =  await bookingRepository.capacityPrisma(roomId)
     if(room.capacity === booking.length) forbiddenError();
 
-    const ticket = await getTicketsPrisma(userId);
+    const ticket = await bookingRepository.getTicketsPrisma(userId);
     if (!ticket) throw notFoundError();
     if (ticket.status === 'RESERVED') throw forbiddenError();
   

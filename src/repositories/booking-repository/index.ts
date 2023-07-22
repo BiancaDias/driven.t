@@ -45,12 +45,25 @@ async function bookingByUser(userId: number){
         where: {userId}
     })
 }
-
+async function getTicketsPrisma(id: number) {
+    return await prisma.ticket.findFirst({
+      where: {
+        Enrollment: {
+          userId: id,
+        },
+      },
+      include: {
+        TicketType: true,
+        Enrollment: true,
+      },
+    });
+  }
 export default {
     bookingByUser,
     capacityPrisma,
     verifyRoomPrisma,
     putBookingPrisma,
     postBookingPrisma,
-    getBookingPrisma
+    getBookingPrisma,
+    getTicketsPrisma
 }
