@@ -16,7 +16,7 @@ export async function postBookingService(userId:number, roomId:number){
     if(!room) throw notFoundError();
 
     const booking =  await bookingRepository.capacityPrisma(roomId)
-    if(room.capacity === booking.length) forbiddenError();
+    if(room.capacity === booking) forbiddenError();
 
     const ticket = await bookingRepository.getTicketsPrisma(userId);
     if (!ticket) throw notFoundError();
