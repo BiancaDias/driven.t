@@ -35,11 +35,13 @@ export async function postBookingService(userId:number, roomId:number){
     return {bookingId: bookingRoom.id}
 }
 
-export async function putBookingService(bookingId:number, roomId:number, userId:number): Promise<Booking>{
+export async function putBookingService(bookingId:number, roomId:number, userId:number){
     const bookingUser = bookingByUser(userId)
+    if(!bookingUser) throw forbiddenError();
     const room = await verifyRoomPrisma(roomId);
     if(!room) throw notFoundError();
     const booking =  await capacityPrisma(roomId)
     if(room.capacity === booking.length) forbiddenError();
-    return await putBookingPrisma(bookingId, roomId);
+    const bookingRoom = await putBookingPrisma(bookingId, roomId);
+    return {bookingId: bookingRoom.id}
 }
