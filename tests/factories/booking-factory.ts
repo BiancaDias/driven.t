@@ -11,24 +11,21 @@ export async function createBooking(userId: number, roomId: number){
     })
 }
 
-export function buildBooking(userId: number, roomId: number): Booking & { Room: Room } {
-    const date = new Date();
-    const room: Room = {
-      id: roomId,
-      name: faker.company.companyName(),
-      capacity: 3,
-      hotelId: 1,
-      createdAt: date,
-      updatedAt: date,
-    };
-  
+export function buildBooking(): Booking & { Room: Room } {
+    
     return {
       id: 1,
-      userId,
-      roomId,
-      createdAt: date,
-      updatedAt: date,
-      Room: room
-    };
-  }
+      userId: 2,
+      roomId: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      Room: {
+        id: 1,
+        name: faker.company.companyName(),
+        capacity: 2,
+        hotelId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
+    }}
   
